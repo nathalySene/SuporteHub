@@ -1,0 +1,15 @@
+/* Authentication uses a server-issued HttpOnly cookie; no passwords/tokens in web storage. */
+function authShell(content){render(`<div class="login"><div class="brand"><div class="logo"><div class="ico" aria-hidden="true">S</div>SuporteHub</div><div><h2>Tecnologia que conecta.<br>Suporte que transforma.</h2><p>Abra um chamado, acompanhe o atendimento e converse com a equipe de suporte.</p><ul><li>Histórico de atendimento</li><li>Respostas e anexos</li><li>Acompanhamento de status</li></ul></div><small>SuporteHub · Atendimento em um só lugar</small></div><div class="fwrap">${content}</div></div>`)}
+async function setupHint(element){
+ try{const setup=await api('/auth/setup');if(element.isConnected&&setup.primeiroAcesso)element.textContent='Primeiro acesso: crie a conta de administrador. Os próximos cadastros serão de usuários.'}catch{}
+}
+function vLogin(){
+ authShell(`<form id="lf"><div><h1>Entrar no SuporteHub</h1><p class="sub">Use seu e-mail e senha para acessar sua área.</p><p class="mu" id="databaseMode">${esc(databaseLabel())}</p><p class="sub" id="setupHint"></p></div><div><label class="l" for="em">E-mail</label><input class="in" id="em" type="email" required autocomplete="username"></div><div><label class="l" for="pw">Senha</label><input class="in" id="pw" type="password" required maxlength="128" autocomplete="current-password"></div><label><input id="remember" type="checkbox">Lembrar de mim</label><p class="err" id="le" role="alert"></p><button type="submit" class="btn">Entrar </button><p>Ainda não tem conta? <a class="lnk" href="#/cadastro">Criar conta</a></p><p class="mu">Se esqueceu a senha, entre em contato com o administrador do suporte.</p></form>`);
+ setupHint($('#setupHint'));
+ $('#lf').onsubmit=e=>{e.preventDefault();const form=e.currentTarget;submit(form,async()=>{await api('/auth/login',{method:'POST',body:JSON.stringify({email:$('#em').value.trim(),senha:$('#pw').value,lembrar:$('#remember').checked})});user=await api('/auth/me');location.hash=isAdmin()?'#/painel':'#/chamados'})};
+}
+function vRegister(){
+ authShell(`<form id="register"><div><h1>Crie sua conta </h1><p class="sub">Acompanhe seus chamados com segurança.</p><p class="sub" id="setupHint"></p></div><div><label class="l" for="name">Nome</label><input class="in" id="name" required minlength="2" maxlength="100" autocomplete="name"></div><div><label class="l" for="em">E-mail</label><input class="in" id="em" type="email" required maxlength="254" autocomplete="username"></div><div><label class="l" for="pw">Senha (10 a 128 caracteres)</label><input class="in" id="pw" type="password" required minlength="10" maxlength="128" autocomplete="new-password"></div><p class="err" role="alert"></p><button type="submit" class="btn">Criar conta</button><a class="lnk" href="#/login">Já tenho conta</a></form>`);
+ setupHint($('#setupHint'));
+ $('#register').onsubmit=e=>{e.preventDefault();submit(e.currentTarget,async()=>{user=await api('/auth/cadastro',{method:'POST',body:JSON.stringify({nome:$('#name').value.trim(),email:$('#em').value.trim(),senha:$('#pw').value})});location.hash=isAdmin()?'#/painel':'#/chamados'})};
+}

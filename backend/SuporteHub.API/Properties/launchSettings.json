@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:5218",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Storage__KeysPath": "../../.local/keys",
+        "Storage__UploadsPath": "../../.local/uploads",
+        "Storage__Provider": "Sqlite",
+        "Storage__DatabasePath": "../../.local/suportehub.db"
+      }
+    },
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "https://localhost:7238;http://localhost:5218",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Storage__KeysPath": "../../.local/keys",
+        "Storage__UploadsPath": "../../.local/uploads",
+        "Storage__Provider": "Sqlite",
+        "Storage__DatabasePath": "../../.local/suportehub.db"
+      }
+    },
+    "aws": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:5218",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Storage__Provider": "DynamoDb",
+        "DynamoDb__TableName": "suportehub-dev",
+        "DynamoDb__Region": "sa-east-1",
+        "DynamoDb__ServiceUrl": "",
+        "Storage__KeysPath": "../../.local/aws-keys",
+        "Storage__UploadsPath": "../../.local/aws-uploads"
+      }
+    }
+  }
+}

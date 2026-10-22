@@ -1,0 +1,23 @@
+@host = http://localhost:5218
+
+# Public readiness: performs a read against the configured DynamoDB table.
+GET {{host}}/api/health
+
+###
+# Your HTTP client must retain the HttpOnly cookie returned by login.
+# Replace these placeholders locally; never commit real credentials.
+POST {{host}}/api/auth/login
+Content-Type: application/json
+X-Requested-With: SuporteHub
+
+{"email":"SEU_EMAIL","senha":"SUA_SENHA"}
+
+###
+GET {{host}}/api/chamados
+
+###
+POST {{host}}/api/chamados
+Content-Type: application/json
+X-Requested-With: SuporteHub
+
+{"titulo":"Problema de acesso","descricao":"Não consigo acessar o sistema.","categoria":"Acesso","prioridade":"Alta"}
